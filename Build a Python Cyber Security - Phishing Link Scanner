@@ -1,0 +1,26 @@
+import requests
+import json
+
+def get_url_info(url):
+    api_key = "YOUR_API_KEY_HERE"  # Replace with your API key
+    api_url = f"https://urlscan.io/api/v1/scan/?url={url}"
+    headers = {"API-Key": api_key, "Content-Type": "application/json"}
+    response = requests.post(api_url, headers=headers)
+    return response.json()
+
+def check_phishing(url_info):
+    if url_info["verdicts"]["urlscan"]["score"] > 50:
+        return True
+    else:
+        return False
+
+def main():
+    url = input("Enter a URL to scan: ")
+    url_info = get_url_info(url)
+    if check_phishing(url_info):
+        print(f"{url} is likely a phishing link!")
+    else:
+        print(f"{url} is likely a safe link!")
+
+if __name__ == "__main__":
+    main()
